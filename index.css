@@ -1,0 +1,47 @@
+#game-canvas {
+    width: 40vh;
+    height: 80vh;
+    z-index: 90;
+    transform: translateZ(-10px);
+}
+.game-section{
+    display: flex;
+    flex-direction: row;
+}
+
+.game-canvas-container{
+    width: 40vh;
+    height: 80vh;
+    position: relative;
+    transform-style: preserve-3d;
+}
+.game-canvas-popup{
+    position: absolute;
+    display: flex;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 250px;
+    width: 250px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.tetris-logo {
+    font-size: 80px;
+    margin: 20px;
+}
+.popup-button {
+    width: 100px;
+    height: 50px;
+}
+.hidden {
+    display: none;
+}
+
+.semi-transparent {
+    background-color: rgb(0 0 0 / 0.5);
+    color: #fff;
+}
+
