@@ -196,7 +196,7 @@ class Game{
 
     autoDrop(){
         //max drop speed is level 8
-        this.interval = setInterval(()=> this.moveVertically(), this.level < 8 ? levels[this.level] : 133)
+        this.interval = setInterval(()=> this.moveVertically(), this.level < 10 ? levels[this.level] : 133)
     }
 
     async handleCollision(isHardDrop, distance){
@@ -209,8 +209,12 @@ class Game{
                 let pointsScored = (scoringMap[numRows] * this.level)
                 this.score += pointsScored
                 if(isHardDrop) this.score += distance * 2 * this.level
+                const linesBefore = this.clearedLines
                 this.clearedLines += numRows
-                this.level = Math.floor(this.clearedLines /10) + 1
+                const linesAfter = this.clearedLines
+                console.log(Math.floor(linesAfter / 10))
+                console.log(Math.floor(linesBefore / 10))
+                if (Math.floor(linesAfter / 10) > Math.floor(linesBefore / 10)) this.level += 1 
                 let animation = this.animateLines(fullRows)
                 let message = this.addLineClearMessage(numRows, pointsScored)
                 this.soundEffects.playLineClear()
@@ -267,8 +271,8 @@ class Game{
         await new Promise(resolve => setTimeout(resolve, 500))
         div.remove()
     }
-    muteTheme(e){
 
+    muteTheme(e){
         e.currentTarget.innerHTML = '<img src =' + (!this.soundEffects.isThemeMuted? './resources/icons/muted-vol.svg' : './resources/icons/vol-on.svg') + '>'
         this.soundEffects.muteTheme()
     }
@@ -285,9 +289,26 @@ class Game{
     button.addEventListener('click', (e)=> this.start(e))
     button.innerText = 'Start Game'
     button.classList.add('popup-button')
-    div.classList.add('game-canvas-popup')
+    const levelSelect = document.createElement('button')
+    levelSelect.classList.add('popup-button')
+    levelSelect.innerText = 'Level: 1'
+    levelSelect.addEventListener('click', ()=> this.changeLevel() )
     div.appendChild(button)
+    div.appendChild(levelSelect)
+    div.classList.add('game-canvas-popup')
     container.appendChild(div)
+    }
+
+    changeLevel(){
+        const container = document.querySelector('.game-canvas-popup')
+        const levelSelect = container.children[2]
+        this.level += 1 
+        if( this.level == 10) this.level = 1
+        levelSelect.innerText = 'Level: ' + this.level
+        const level =  document.querySelector('.ui-collumn').children[1].children[1]
+        level.innerText= this.level
+        
+
     }
 }
 
