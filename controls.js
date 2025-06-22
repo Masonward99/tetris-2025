@@ -13,7 +13,7 @@ window.addEventListener('keydown', function (event) {
 
     switch (event.key) {
         case 'Escape':
-            pauseGame()
+            game.pause()
             break
         case 'ArrowLeft':
             game.moveHorizontally(-1)
@@ -41,10 +41,6 @@ window.addEventListener('keydown', function (event) {
 })
 
 let game = new Game()
-
-if(!game.hasStarted){
-    game.displayStartScreen()
-}
 
 
 function pauseGame(){

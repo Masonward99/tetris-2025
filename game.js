@@ -11,6 +11,7 @@ import { T } from "./Shapes/T.js"
 import { scoringMap } from "./scoringMap.js"
 import { nextShapeCanvas } from "./nextShapeCanvas.js"
 import { SoundEffects } from "./soundEffects.js"
+import { Display } from "./display.js"
 
 class Game{
     grid
@@ -25,10 +26,10 @@ class Game{
     hasEnded
     hasStarted
     isPaused
-    pauseElement
     isAnimating
     theme
     soundEffects
+    display
 
     constructor (){
         this.clearedLines = 0
@@ -46,26 +47,28 @@ class Game{
         this.theme = new Audio('./resources/tetris-theme.mp3')
         this.theme.loop = true
         this.soundEffects = new SoundEffects()
+        this.display = new Display(this)
+        this.display.displayStartScreen()
     }
     
     async start(e){
         if (e){
             e.currentTarget.parentElement.remove()
         }
-        await this.countdown()
+        await this.display.countdown()
         this.hasStarted = true
         this.addShapeToGrid(this.nextShape)
         this.soundEffects.playTheme()
     }
 
-    async pause (element){
+    async pause (){
         if(this.isPaused){
-            this.pauseElement.remove()
-            await this.countdown()
+            this.display.removePauseScreen()
+            await this.display.countdown()
             this.isPaused = false
             this.autoDrop()
         }else{
-            this.pauseElement = element
+            this.display.displayPauseScreen()
             clearInterval(this.interval)
             this.isPaused = true
         }
@@ -104,7 +107,6 @@ class Game{
 
     getRandomShape(){
         let randomNum = Math.floor(Math.random() * 7)
-        // randomNum = 2
         switch (randomNum){
             case 0:
                 return new Square()
@@ -136,7 +138,7 @@ class Game{
         else {
             this.handleCollision(false, 0)
         }
-        this.updateUi()
+        this.display.updateUi(this.score, this.level, this.clearedLines)
     }
 
     moveHorizontally(d){
@@ -191,11 +193,11 @@ class Game{
         let distance = points[0][1] - this.shape.getPoints()[0][1] 
         this.grid.changePoints(points, this.shape.getColor())
         this.handleCollision(true, distance)
-        this.updateUi()
+        this.display.updateUi(this.score, this.level, this.clearedLines)
     }
 
     autoDrop(){
-        //max drop speed is level 8
+        //max drop speed is level 10
         this.interval = setInterval(()=> this.moveVertically(), this.level < 10 ? levels[this.level] : 133)
     }
 
@@ -212,40 +214,15 @@ class Game{
                 const linesBefore = this.clearedLines
                 this.clearedLines += numRows
                 const linesAfter = this.clearedLines
-                console.log(Math.floor(linesAfter / 10))
-                console.log(Math.floor(linesBefore / 10))
                 if (Math.floor(linesAfter / 10) > Math.floor(linesBefore / 10)) this.level += 1 
                 let animation = this.animateLines(fullRows)
-                let message = this.addLineClearMessage(numRows, pointsScored)
+                let message = this.display.addLineClearMessage(numRows, pointsScored)
                 this.soundEffects.playLineClear()
                 await Promise.all([animation, message])
                 this.grid.removeFullRows(fullRows)
                 this.isAnimating = false
             }
             this.addShapeToGrid(this.nextShape)
-    }
-
-    updateUi(){
-        const ui = document.querySelector('.ui-collumn')
-        const level = ui.children[1].querySelector('p')
-        level.innerText = this.level
-        const score = ui.children[2].querySelector('p')
-        score.innerText = this.score
-        const clearedLines = ui.children[3].querySelector('p')
-        clearedLines.innerText = this.clearedLines
-    }
-
-    async countdown (){
-        const container = document.querySelector('.game-canvas-container')
-        const text = document.createElement('p')
-        text.classList.add('game-canvas-popup')
-        container.appendChild(text)
-        for (let i = 3; i > 0; i--){
-            text.innerText = i
-            await new Promise(resolve => setTimeout(resolve, 1000));
-        }
-        text.remove()
-        container.classList.remove('semi-transparent')
     }
 
     async animateLines(rows){
@@ -256,47 +233,9 @@ class Game{
         }
     }
 
-    async addLineClearMessage(numLines, points){
-        const container = document.querySelector('.game-canvas-container')
-        const div = document.createElement('div')
-        div.classList.add('semi-transparent')
-        div.classList.add('game-canvas-popup')
-        const text1 = document.createElement('p')
-        text1.innerText = 'You cleared ' + numLines + ' lines!!'
-        div.appendChild(text1)
-        const text2 = document.createElement('p')
-        text2.innerText = 'Scoring ' + points + ' points'
-        div.appendChild(text2)
-        container.append(div)
-        await new Promise(resolve => setTimeout(resolve, 500))
-        div.remove()
-    }
-
     muteTheme(e){
         e.currentTarget.innerHTML = '<img src =' + (!this.soundEffects.isThemeMuted? './resources/icons/muted-vol.svg' : './resources/icons/vol-on.svg') + '>'
         this.soundEffects.muteTheme()
-    }
-
-    displayStartScreen(){
-    const container = document.querySelector('.game-canvas-container')
-    container.classList.add('semi-transparent')
-    const div = document.createElement('div')
-    const title = document.createElement('h2')
-    title.innerText = 'Tetris'
-    title.classList.add('tetris-logo')
-    div.appendChild(title)
-    const button = document.createElement('button')
-    button.addEventListener('click', (e)=> this.start(e))
-    button.innerText = 'Start Game'
-    button.classList.add('popup-button')
-    const levelSelect = document.createElement('button')
-    levelSelect.classList.add('popup-button')
-    levelSelect.innerText = 'Level: 1'
-    levelSelect.addEventListener('click', ()=> this.changeLevel() )
-    div.appendChild(button)
-    div.appendChild(levelSelect)
-    div.classList.add('game-canvas-popup')
-    container.appendChild(div)
     }
 
     changeLevel(){
@@ -307,9 +246,10 @@ class Game{
         levelSelect.innerText = 'Level: ' + this.level
         const level =  document.querySelector('.ui-collumn').children[1].children[1]
         level.innerText= this.level
-        
-
     }
+
+
+    
 }
 
 export {Game}
