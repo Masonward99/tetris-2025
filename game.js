@@ -187,7 +187,6 @@ class Game{
     }
 
     hardDrop(){
-        if (this.hasEnded) return
         let points = this.grid.hardDropPoints
         let distance = points[0][1] - this.shape.getPoints()[0][1] 
         this.grid.changePoints(points, this.shape.getColor())
@@ -246,7 +245,7 @@ class Game{
     }
 
     async animateLines(rows){
-        for (let i=0; i<5; i++){
+        for (let i=0; i < 5; i++){
             this.grid.setRows(rows, i % 2 == 0 ? 0 : 9)
             this.canvas.draw(this.grid.getGrid())
             await new Promise(resolve => setTimeout(resolve, 100))

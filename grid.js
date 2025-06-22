@@ -4,7 +4,7 @@ class Grid {
     hardDropPoints
 
     constructor (){
-        this.grid = new Array(20)
+        this.grid =  new Array(20)
         for (let row = 0; row < this.grid.length; row++){
             let col = new Array(10).fill(0)
             this.grid[row] = col
@@ -53,8 +53,8 @@ class Grid {
         return fullRows
     }
 
-    async removeFullRows(fullRows){
-        fullRows.sort( )
+    removeFullRows(fullRows){
+        fullRows.sort((a, b) => a - b)
         for (let row of fullRows){
              this.grid.splice(row, 1)
              this.grid.unshift(new Array(10).fill(0))
@@ -140,4 +140,6 @@ class Grid {
         }
     }
 }
+
+
 export {Grid}

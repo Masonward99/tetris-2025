@@ -43,20 +43,9 @@ window.addEventListener('keydown', function (event) {
 let game = new Game()
 
 if(!game.hasStarted){
-    // const container = document.querySelector('.game-canvas-container')
-    // container.classList.add('semi-transparent')
-    // const button = document.createElement('button')
-    // button.addEventListener('click', startGame)
-    // button.innerText = 'Start Game'
-    // button.classList.add('game-canvas-popup')
-    // container.appendChild(button)
     game.displayStartScreen()
 }
 
-function startGame (e){
-    e.currentTarget.remove()
-    game.start()
-}
 
 function pauseGame(){
     let text = null
