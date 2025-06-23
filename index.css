@@ -80,3 +80,14 @@
     height: 40px;
     width: 40px;
 }
+
+.volume-button {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.volume-button div {
+    display: flex;
+    flex-direction: row;
+}

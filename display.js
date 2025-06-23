@@ -43,8 +43,12 @@ class Display {
         }
         //music volume slider
         const settingsElement = this.createSettingsElement()
+        const title = document.createElement('h2')
+        title.innerText = 'Settings'
+        settingsElement.prepend(title)
         const back = document.createElement('button')
         back.classList.add('popup-button')
+        back.innerText = 'Back'
         back.addEventListener('click',() =>this.exitSettings())
         settingsElement.appendChild(back)
         this.container.appendChild(settingsElement)
@@ -118,12 +122,14 @@ class Display {
         const musicUp = document.createElement('button')
         musicUp.innerText = '+'
         musicVolumeSlider.appendChild(musicVolumeSliderTitle)
-        musicVolumeSlider.appendChild(musicDown)
-        musicVolumeSlider.appendChild(musicLevel)
-        musicVolumeSlider.appendChild(musicUp)
+        const buttonDiv  = document.createElement('div')
+        buttonDiv.appendChild(musicDown)
+        buttonDiv.appendChild(musicLevel)
+        buttonDiv.appendChild(musicUp)
+        musicVolumeSlider.appendChild(buttonDiv)
         musicUp.addEventListener('click', ()=> this.game.soundEffects.musicVolumeUp())
         musicDown.addEventListener('click',()=> this.game.soundEffects.musicVolumeDown())
-        console.log(musicVolumeSlider)
+        musicVolumeSlider.classList.add('volume-button')
         return musicVolumeSlider
     }
 
@@ -139,11 +145,14 @@ class Display {
         const effectsUp = document.createElement('button')
         effectsUp.innerText = '+'
         effectsVolumeSlider.appendChild(effectsVolumeSliderTitle)
-        effectsVolumeSlider.appendChild(effectsDown)
-        effectsVolumeSlider.appendChild(effectsLevel)
-        effectsVolumeSlider.appendChild(effectsUp)
+        const buttonDiv = document.createElement('div')
+        buttonDiv.appendChild(effectsDown)
+        buttonDiv.appendChild(effectsLevel)
+        buttonDiv.appendChild(effectsUp)
+        effectsVolumeSlider.appendChild(buttonDiv)
         effectsUp.addEventListener('click', ()=> this.game.soundEffects.effectsVolumeUp())
         effectsDown.addEventListener('click',()=> this.game.soundEffects.effectsVolumeDown())
+        effectsVolumeSlider.classList.add('volume-button')
         return effectsVolumeSlider
     }
 

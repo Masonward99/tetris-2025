@@ -62,6 +62,7 @@ class Game{
     }
 
     async pause (){
+        if (!this.hasStarted || this.hasEnded) return 
         if(this.isPaused){
             this.display.removePauseScreen()
             await this.display.countdown()

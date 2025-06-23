@@ -43,18 +43,10 @@ window.addEventListener('keydown', function (event) {
 let game = new Game()
 
 
-function pauseGame(){
-    let text = null
-    if(!game.isPaused){
-        const container = document.querySelector('.game-canvas-container')
-        container.classList.add('semi-transparent')
-        text = document.createElement('p')
-        text.innerText = 'Paused'
-        text.classList.add('game-canvas-popup')
-        container.appendChild(text)
-    }
-    game.pause(text)
-}
+
 
 const muteThemeButton = document.getElementById('mute-theme-button')
 muteThemeButton.addEventListener('click',(e)=> game.muteTheme(e))
+
+const pauseButton = document.getElementById('pause-game-button')
+pauseButton.addEventListener('click', (e)=> game.pause(e))
