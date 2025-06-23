@@ -234,9 +234,9 @@ class Game{
         }
     }
 
-    muteTheme(e){
-        e.currentTarget.innerHTML = '<img src =' + (!this.soundEffects.isThemeMuted? './resources/icons/muted-vol.svg' : './resources/icons/vol-on.svg') + '>'
-        this.soundEffects.muteTheme()
+    mute(e){
+        e.currentTarget.innerHTML = '<img src =' + (!this.soundEffects.isMuted? './resources/icons/muted-vol.svg' : './resources/icons/vol-on.svg') + '>'
+        this.soundEffects.mute()
     }
 
     changeLevel(){

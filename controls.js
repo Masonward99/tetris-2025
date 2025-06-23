@@ -46,7 +46,7 @@ let game = new Game()
 
 
 const muteThemeButton = document.getElementById('mute-theme-button')
-muteThemeButton.addEventListener('click',(e)=> game.muteTheme(e))
+muteThemeButton.addEventListener('click',(e)=> game.mute(e))
 
 const pauseButton = document.getElementById('pause-game-button')
 pauseButton.addEventListener('click', (e)=> game.pause(e))
