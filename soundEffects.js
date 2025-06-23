@@ -2,16 +2,23 @@ class SoundEffects {
     drop
     lineClear
     theme
-    isThemeMuted
+    isMuted
+    effectsVolume
+    musicVolume
 
     constructor (){
         this.lineClear = new Audio('./resources/success.wav')
         this.theme = new Audio('./resources/tetris-theme.mp3')
+        this.musicVolume = 1
+        this.effectsVolume = 1
+        this.isMuted = false
+        this.mute()
     }
 
-    muteTheme (){
-        this.theme.volume = this.isThemeMuted? 1 : 0
-        this.isThemeMuted = !this.isThemeMuted
+    mute (){
+        this.theme.muted = !this.isMuted
+        this.lineClear.muted = !this.isMuted
+        this.isMuted = !this.isMuted
     }
 
     playLineClear(){
