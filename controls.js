@@ -13,7 +13,7 @@ window.addEventListener('keydown', function (event) {
 
     switch (event.key) {
         case 'Escape':
-            pauseGame()
+            game.pause()
             break
         case 'ArrowLeft':
             game.moveHorizontally(-1)
@@ -42,23 +42,11 @@ window.addEventListener('keydown', function (event) {
 
 let game = new Game()
 
-if(!game.hasStarted){
-    game.displayStartScreen()
-}
 
 
-function pauseGame(){
-    let text = null
-    if(!game.isPaused){
-        const container = document.querySelector('.game-canvas-container')
-        container.classList.add('semi-transparent')
-        text = document.createElement('p')
-        text.innerText = 'Paused'
-        text.classList.add('game-canvas-popup')
-        container.appendChild(text)
-    }
-    game.pause(text)
-}
 
 const muteThemeButton = document.getElementById('mute-theme-button')
 muteThemeButton.addEventListener('click',(e)=> game.muteTheme(e))
+
+const pauseButton = document.getElementById('pause-game-button')
+pauseButton.addEventListener('click', (e)=> game.pause(e))
